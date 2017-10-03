@@ -22,13 +22,14 @@ const MongoStore = mongo(session);
 /**
  * Load environment variables from .env file, where API keys and passwords are configured.
  */
-// dotenv.config({ path: ".env.example" });
+dotenv.config({ path: ".env.example" });
 
 
 /**
  * Controllers (route handlers).
  */
 import * as indexController from "./controllers/index";
+import * as userController from "./controllers/user";
 
 /**
  * API keys and Passport configuration.
@@ -44,12 +45,12 @@ const app = express();
  * Connect to MongoDB.
  */
 // mongoose.Promise = global.Promise;
-// mongoose.connect(process.env.MONGODB_URI || process.env.MONGOLAB_URI);
-//
-// mongoose.connection.on("error", () => {
-//   console.log("MongoDB connection error. Please make sure MongoDB is running.");
-//   process.exit();
-// });
+mongoose.connect(process.env.MONGODB_URI || process.env.MONGOLAB_URI);
+
+mongoose.connection.on("error", () => {
+  console.log("MongoDB connection error. Please make sure MongoDB is running.");
+  process.exit();
+});
 
 
 
@@ -102,6 +103,7 @@ app.use(express.static(path.join(__dirname, "public"), { maxAge: 31557600000 }))
  * Primary app routes.
  */
 app.get("/", indexController.index);
+app.get("/getAll", userController.getAll);
 
 /**
  * API examples routes.
