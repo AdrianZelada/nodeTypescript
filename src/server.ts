@@ -29,7 +29,8 @@ dotenv.config({ path: ".env.example" });
  * Controllers (route handlers).
  */
 import * as indexController from "./controllers/index";
-import * as userController from "./controllers/user";
+// import * as userController from "./controllers/user";
+import {userController} from "./controllers/userController";
 
 /**
  * API keys and Passport configuration.
@@ -103,7 +104,9 @@ app.use(express.static(path.join(__dirname, "public"), { maxAge: 31557600000 }))
  * Primary app routes.
  */
 app.get("/", indexController.index);
-app.get("/getAll", userController.getAll);
+app.use("/users", new userController(express.Router()).router);
+
+
 
 /**
  * API examples routes.
